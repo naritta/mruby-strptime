@@ -631,9 +631,9 @@ parse_method(mrb_state *mrb, mrb_value self)
 
     mrb_value time_hash = mrb_hash_new(mrb);
 
-    date__strptime_internal(mrb, str, strlen(str), fmt, strlen(fmt), hash);
+    date__strptime_internal(mrb, str, strlen(str), fmt, strlen(fmt), time_hash);
 
-    return hash;
+    return time_hash;
 }
 
 static mrb_value
