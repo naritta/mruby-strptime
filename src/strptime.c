@@ -623,11 +623,13 @@ size_t si, fi;
 static mrb_value
 parse_method(mrb_state *mrb, mrb_value self)
 {
-    char *str;
     static const char *fmt = "%FT%T%z";
+    mrb_value mstr;
 
-    mrb_get_args(mrb, "s", &str);
-    mrb_value hash = mrb_hash_new(mrb);
+    mrb_get_args(mrb, "o", &mstr);
+    const char *str = mrb_str_to_cstr(mrb, mstr);
+
+    mrb_value time_hash = mrb_hash_new(mrb);
 
     date__strptime_internal(mrb, str, strlen(str), fmt, strlen(fmt), hash);
 
@@ -637,10 +639,12 @@ parse_method(mrb_state *mrb, mrb_value self)
 static mrb_value
 strptime_initialize(mrb_state *mrb, mrb_value self)
 {
-    char *str;
     static const char *fmt = "%FT%T%z";
+    mrb_value mstr;
 
-    mrb_get_args(mrb, "s", &str);
+    mrb_get_args(mrb, "o", &mstr);
+    const char *str = mrb_str_to_cstr(mrb, mstr);
+
     mrb_value time_hash = mrb_hash_new(mrb);
 
     date__strptime_internal(mrb, str, strlen(str), fmt, strlen(fmt), time_hash);
@@ -736,7 +740,7 @@ void
 mrb_mruby_strptime_gem_init(mrb_state* mrb) {
     struct RClass *strptime_class = mrb_define_class(mrb, "Strptime", mrb->object_class);
     mrb_define_class_method(mrb, strptime_class, "parse", parse_method, MRB_ARGS_REQ(1));
-    mrb_define_method(mrb, strptime_class, "initialize", strptime_initialize, MRB_ARGS_REQ(1) | MRB_ARGS_OPT(1));
+    mrb_define_method(mrb, strptime_class, "initialize", strptime_initialize, MRB_ARGS_REQ(1));
     mrb_define_method(mrb, strptime_class, "to_time", strptime_to_time_method, MRB_ARGS_NONE());
     mrb_define_method(mrb, strptime_class, "to_i", strptime_to_i_method, MRB_ARGS_NONE());
     mrb_define_method(mrb, strptime_class, "to_i_without_offset", strptime_to_i_without_offset_method, MRB_ARGS_NONE());
