@@ -1,3 +1,10 @@
+/*
+** strptime.c - Strptime class
+**
+** Copyright (c) Tadayoshi Funaba, Ritta Narita 2011-2017
+**
+** See Copyright Notice in LICENSE
+*/
 #include <mruby.h>
 #include <stdio.h>
 #include <ctype.h>
