@@ -7,6 +7,7 @@
 */
 #include <mruby.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <mruby/hash.h>
 #include <mruby/string.h>
@@ -80,14 +81,10 @@ static long read_digits(mrb_state *mrb, const char *s, mrb_value *n,
     *n = mrb_fixnum_value(v);
     return l;
   } else {
-    // TODO:	use alloc
-    // mrb_value vbuf = mrb_fixnum_value(0);
-    // char         *s2 = ALLOCV_N(char, vbuf, l + 1);
-    char *s2 = NULL;
+    char *s2 = malloc( sizeof(char) * (l + 1));;
     memcpy(s2, s, l);
     s2[l] = '\0';
     *n = mrb_str_to_inum(mrb, mrb_str_new_cstr(mrb, s2), 10, 0);
-    // ALLOCV_END(vbuf);
     return l;
   }
 }
